@@ -1,14 +1,14 @@
-const xhr = new XMLHttpRequest();
-xhr.open('GET', 'https://reqres.in/api/users?page=1');
+const tbody = document.getElementById('tbody'); // élément tbody du tableau
+const students = []; // liste des étudiants
 
-xhr.addEventListener('readystatechange', () => {
-    if(xhr.readyState === 4 && xhr.status === 200) {
-        const data = JSON.parse(xhr.response).data;
-        data.forEach(user => {
-            user.name = `${user.first_name} ${user.last_name}`
-        })
-        console.log(data)
-    };
-});
-
-xhr.send();
+// fonction de création de ligne
+const createLine = (tbody, student) => {
+    const newRow   = tbody.insertRow();
+    let counter = 0
+    for (const key in student) {
+        const newCell  = newRow.insertCell(counter);
+        const newText  = document.createTextNode(student[key]);
+        newCell.appendChild(newText);
+        counter++
+    }
+}
