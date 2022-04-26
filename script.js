@@ -1,7 +1,6 @@
-const tbody = document.getElementById('tbody'); // élément tbody du tableau
-const students = []; // liste des étudiants
+const tbody = document.getElementById('tbody');
+const students = [];
 
-// fonction de création de ligne
 const createLine = (tbody, student) => {
     const newRow   = tbody.insertRow();
     let counter = 0
@@ -11,4 +10,25 @@ const createLine = (tbody, student) => {
         newCell.appendChild(newText);
         counter++
     }
+}
+
+const sendForm = (firstName, lastName, grade, numberClass) => {
+    const student = {id: '', firstName, lastName, grade, numberClass};
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://reqres.in/api/users');
+
+    xhr.addEventListener('readystatechange', () => {
+        if(xhr.readyState === 4) {
+            if (xhr.status === 201) {
+                const data = JSON.parse(xhr.response);
+                student.id = data.id;
+                students.push(student);
+                createLine(tbody, student);
+            } else {
+                alert('Erreur')
+            }
+        }
+    });
+
+    xhr.send(student);
 }
